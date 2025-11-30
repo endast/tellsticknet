@@ -9,7 +9,8 @@ from time import time
 import tellsticknet.const as const
 from platform import node as hostname
 import string
-from amqtt.client import MQTTClient, ConnectException, ClientException
+from amqtt.client import MQTTClient
+from amqtt.errors import ConnectError, ClientError
 import asyncio
 
 
@@ -509,7 +510,7 @@ async def run(discover, config):
             _LOGGER.info("Connecting")
             await mqtt.connect(uri=mqtt_url, cleansession=False)
             _LOGGER.info("Connected to MQTT server")
-        except ConnectException as e:
+        except ConnectError as e:
             exit("Could not connect to MQTT server: %s" % e)
 
         await devices_setup.wait()
@@ -522,7 +523,7 @@ async def run(discover, config):
                 payload = packet.payload.data.decode("ascii")
                 _LOGGER.debug("got message on %s: %s", topic, payload)
                 await Device.route_message(topic, payload)
-            except ClientException as e:
+            except ClientError as e:
                 _LOGGER.error("MQTT Client exception: %s", e)
 
     loop = asyncio.get_event_loop()
