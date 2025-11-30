@@ -44,6 +44,7 @@ Homepage = "https://github.com/molobrakos/tellsticknet"
 Repository = "https://github.com/molobrakos/tellsticknet"
 
 [tool.pytest.ini_options]
+testpaths = ["tests", "tellsticknet"]
 addopts = "--doctest-modules"
 
 [tool.ruff]

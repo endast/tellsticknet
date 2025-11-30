@@ -1,4 +1,4 @@
-from .protocol import _decode
+from tellsticknet.protocol import _decode
 
 
 def _maybe_int(s):

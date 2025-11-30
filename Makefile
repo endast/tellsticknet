@@ -9,10 +9,10 @@ format:
 	ruff format tellsticknet
 
 lint:
-	ruff check tellsticknet
+	ruff check tellsticknet tests
 
 test:
-	pytest tellsticknet
+	uv run python -m pytest -v
 
 check: lint test
 
