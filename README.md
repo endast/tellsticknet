@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/molobrakos/tellsticknet.svg?branch=master)](https://travis-ci.org/molobrakos/tellsticknet)
+[![CI](https://github.com/molobrakos/tellsticknet/actions/workflows/ci.yml/badge.svg)](https://github.com/molobrakos/tellsticknet/actions/workflows/ci.yml)
 
 Interface with a Tellstick Net device on the local network bypassing the Telldus Live cloud service (events are still passed through the Telldus Live cloud service).
 
