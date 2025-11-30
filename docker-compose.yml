@@ -1,7 +1,7 @@
-version: "2.2"
 networks:
   tellsticknet:
     driver: bridge
+
 services:
   tellsticknet:
     build:
@@ -14,8 +14,8 @@ services:
       - "42314:42314/udp"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ~/.config/tellsticknet.conf:/app/.config/tellsticknet.conf:ro
-      - ~/.config/mosquitto_pub:/app/.config/mosquitto_pub:ro
-    command: -vv --ip <ip>
+      - ${HOME}/.config/tellsticknet.conf:/app/tellsticknet.conf:ro
+      - ${HOME}/.config/mosquitto_pub:/app/.config/mosquitto_pub:ro
+    command: ["python3", "-m", "tellsticknet", "mqtt", "-vv"]
     networks:
       - tellsticknet
