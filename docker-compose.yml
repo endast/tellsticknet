@@ -15,6 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${HOME}/.config/tellsticknet.conf:/app/tellsticknet.conf:ro
       - ${HOME}/.config/mosquitto_pub:/app/.config/mosquitto_pub:ro
-    command: ["python3", "-m", "tellsticknet", "mqtt", "-vv"]
+    command: ["uv", "run", "python", "-m", "tellsticknet", "mqtt", "-vv"]
     networks:
       - tellsticknet

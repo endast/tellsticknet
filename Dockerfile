@@ -23,7 +23,7 @@ USER tellstick
 
 COPY --chown=tellstick:tellstick . ./
 
-RUN uv sync --frozen --no-dev && uv pip install docopt
+RUN uv sync --frozen --no-dev
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["python3", "-m", "tellsticknet", "mqtt", "-vv"]
+CMD ["uv", "run", "python", "-m", "tellsticknet", "mqtt", "-vv"]
