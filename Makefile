@@ -5,18 +5,11 @@ default: check
 install:
 	uv sync --all-extras
 
-format: white
-
-white: black
-
-black:
-	black tellsticknet
-	white tellsticknet
+format:
+	ruff format tellsticknet
 
 lint:
-	flake8 tellsticknet
-	pylint -E tellsticknet
-	yamllint tellsticknet-sample.conf
+	ruff check tellsticknet
 
 test:
 	pytest tellsticknet

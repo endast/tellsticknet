@@ -10,7 +10,7 @@ def decode(packet):
 
     if packet["model"] != 6701:
         raise NotImplementedError(
-            "The Oregon model %i is not implemented." % packet["model"]
+            f"The Oregon model {packet['model']} is not implemented."
         )
 
     data = packet["data"]
@@ -46,8 +46,7 @@ def decode(packet):
 
     if checksum != checksum1:
         raise ValueError(
-            "The checksum in the Oregon packet does not match "
-            "the caluclated one!"
+            "The checksum in the Oregon packet does not match the caluclated one!"
         )
 
     temperature = ((temp1 * 100) + (temp2 * 10) + temp3) / 10.0

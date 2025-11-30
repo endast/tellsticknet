@@ -7,9 +7,5 @@ install:
   - uv sync --all-extras
 script:
   - pytest tellsticknet
-  - black --version
-  - white --check tellsticknet
-  - pylint -E tellsticknet
-  - flake8 --version
-  - flake8 tellsticknet
-  - yamllint tellsticknet-sample.conf
+  - ruff check tellsticknet
+  - ruff format --check tellsticknet

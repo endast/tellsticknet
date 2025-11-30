@@ -72,8 +72,7 @@ def test_nexa():
     https://github.com/telldus/telldus/blob/master/telldus-core/tests/service/ProtocolNexaTest.cpp
     """
     _assert_equal(
-        "class:command;protocol:arctech;model:codeswitch;house:A;"
-        "unit:1;method:turnon;",
+        "class:command;protocol:arctech;model:codeswitch;house:A;unit:1;method:turnon;",
         "protocol:arctech;model:codeswitch;data:0xE00;",
     )
 

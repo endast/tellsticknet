@@ -1,7 +1,8 @@
-from . import nexa, waveman, sartano
-from .. import const
-from collections import OrderedDict
 import logging
+from collections import OrderedDict
+
+from .. import const
+from . import nexa, sartano, waveman
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,9 +15,7 @@ def decode(packet):
     We must copy packet since "data" key will be popped by
     protocol implementations
     """
-    return (
-        nexa.decode(packet) or waveman.decode(packet) or sartano.decode(packet)
-    )
+    return nexa.decode(packet) or waveman.decode(packet) or sartano.decode(packet)
 
 
 def encode(model, house, unit, method, param, **kwargs):

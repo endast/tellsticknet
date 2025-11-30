@@ -29,17 +29,10 @@ test = [
     "pytest-sugar",
 ]
 lint = [
-    "flake8",
-    "pylint",
-    "flake8-bugbear",
-    "yamllint",
-]
-format = [
-    "black",
-    "white",
+    "ruff",
 ]
 dev = [
-    "tellsticknet[test,lint,format]",
+    "tellsticknet[test,lint]",
 ]
 
 [project.scripts]
@@ -52,6 +45,22 @@ Repository = "https://github.com/molobrakos/tellsticknet"
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
 
-[tool.flake8]
-ignore = ["E203", "W503"]
-exclude = [".git", "__pycache__", "build", "dist"]
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501", # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # unused imports in __init__.py are often intentional
