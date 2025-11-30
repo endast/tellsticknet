@@ -22,7 +22,7 @@ RUN useradd -m -u 1000 -s /bin/bash tellstick \
 USER tellstick
 
 COPY --chown=tellstick:tellstick pyproject.toml uv.lock README.md ./
-COPY --chown=tellstick:tellstick tellsticknet ./tellsticknet
+COPY --chown=tellstick:tellstick src ./src
 
 RUN uv sync --frozen --no-dev \
     && uv pip install --no-cache coloredlogs libnacl
