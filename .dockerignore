@@ -1,6 +1,58 @@
-*
-!pyproject.toml
-!uv.lock
-!tellsticknet
+# Development and build artifacts
 **/__pycache__
-**/*~
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# CI/CD
+.github/
+.travis.yml
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Tests
+tests/
+.coverage
+htmlcov/
+
+# Environment
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# Project specific
+.dockerignore
+Dockerfile
+docker-compose.yml
+Makefile
+.claude/
+
+# Temporary files
+*.log
+.tmp

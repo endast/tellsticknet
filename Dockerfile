@@ -1,30 +1,32 @@
-FROM python:3.12-slim
+FROM python:3.12-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
 
 WORKDIR /app
 
-RUN set -x \
-&& apt-get update \
-&& apt-get -y --no-install-recommends install dumb-init libsodium23 curl \
-&& apt-get -y autoremove \
-&& apt-get -y clean \
-&& rm -rf /var/lib/apt/lists/* \
-&& rm -rf /tmp/* \
-&& rm -rf /var/tmp/* \
-&& useradd -M --home-dir /app tellstick \
-  ;
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        dumb-init \
+        libsodium23 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-COPY pyproject.toml uv.lock ./
-COPY tellsticknet ./tellsticknet
-
-RUN uv sync --frozen --no-dev && \
-    uv pip install --system --no-cache coloredlogs libnacl \
-  ;
+RUN useradd -m -u 1000 -s /bin/bash tellstick \
+    && chown -R tellstick:tellstick /app
 
 USER tellstick
 
-COPY . ./
+COPY --chown=tellstick:tellstick pyproject.toml uv.lock ./
 
-ENTRYPOINT ["dumb-init", "--", "python3", "-m", "tellsticknet", "mqtt"]
+RUN uv sync --frozen --no-dev \
+    && uv pip install --no-cache coloredlogs libnacl
+
+COPY --chown=tellstick:tellstick tellsticknet ./tellsticknet
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["python3", "-m", "tellsticknet", "mqtt"]
