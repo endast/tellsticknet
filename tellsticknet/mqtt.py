@@ -105,13 +105,14 @@ def get_mqtt_url():
         _LOGGER.debug("%s found in env, using it", ENV_KEY)
         return env[ENV_KEY]
 
+    config_path = join(
+        env.get("XDG_CONFIG_HOME", join(expanduser("~"), ".config")),
+        "mosquitto_pub",
+    )
+    _LOGGER.debug("Looking for MQTT config at %s", config_path)
+
     try:
-        with open(
-            join(
-                env.get("XDG_CONFIG_HOME", join(expanduser("~"), ".config")),
-                "mosquitto_pub",
-            )
-        ) as f:
+        with open(config_path) as f:
             config = dict(
                 line.replace("-", "").split() for line in f.read().splitlines()
             )
@@ -122,7 +123,11 @@ def get_mqtt_url():
             protocol = "mqtt" if port == 1883 else "mqtts"
             _LOGGER.debug("MQTT credentials loaded from %s", f.name)
             return f"{protocol}://{username}:{password}@{host}:{port}"
-    except (OSError, KeyError):
+    except OSError as e:
+        _LOGGER.debug("Could not read MQTT config file: %s", e)
+        return None
+    except KeyError as e:
+        _LOGGER.debug("Missing key in MQTT config file: %s", e)
         return None
 
 
@@ -489,6 +494,10 @@ async def run(discover, config):
     mqtt = MQTTClient(client_id=client_id)
 
     mqtt_url = get_mqtt_url()
+    if mqtt_url:
+        _LOGGER.debug("Using MQTT URL: %s", mqtt_url.split("@")[-1] if "@" in mqtt_url else mqtt_url)
+    else:
+        _LOGGER.debug("No MQTT URL configured, using default")
 
     devices_setup = asyncio.Event()
 
