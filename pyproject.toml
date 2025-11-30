@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tellsticknet"
+version = "0.1.2"
+description = "Listen for UDP sensor broadcasts from a Tellstick"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+    { name = "Erik Eriksson", email = "error.errorsson@gmail.com" }
+]
+keywords = ["tellstick"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
+
+dependencies = [
+    "docopt",
+    "requests",
+    "pyyaml",
+    "amqtt<0.11",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-sugar",
+]
+lint = [
+    "flake8",
+    "pylint",
+    "flake8-bugbear",
+    "yamllint",
+]
+format = [
+    "black",
+    "white",
+]
+dev = [
+    "tellsticknet[test,lint,format]",
+]
+
+[project.scripts]
+tellsticknet = "tellsticknet.__main__:app_main"
+
+[project.urls]
+Homepage = "https://github.com/molobrakos/tellsticknet"
+Repository = "https://github.com/molobrakos/tellsticknet"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+[tool.flake8]
+ignore = ["E203", "W503"]
+exclude = [".git", "__pycache__", "build", "dist"]

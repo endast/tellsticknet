@@ -1,10 +1,10 @@
-FROM python:3.7-slim-stretch
+FROM python:3.12-slim
 
 WORKDIR /app
 
 RUN set -x \
 && apt-get update \
-&& apt-get -y --no-install-recommends install dumb-init libsodium18 \
+&& apt-get -y --no-install-recommends install dumb-init libsodium23 curl \
 && apt-get -y autoremove \
 && apt-get -y clean \
 && rm -rf /var/lib/apt/lists/* \
@@ -13,10 +13,13 @@ RUN set -x \
 && useradd -M --home-dir /app tellstick \
   ;
 
-COPY requirements.txt ./
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-RUN pip --no-cache-dir --trusted-host pypi.org install --upgrade -r requirements.txt pip coloredlogs libnacl \
-  && rm requirements.txt \
+COPY pyproject.toml ./
+COPY tellsticknet ./tellsticknet
+
+RUN uv pip install --system --no-cache coloredlogs libnacl . \
   ;
 
 USER tellstick

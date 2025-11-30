@@ -2,37 +2,44 @@ IMAGE=molobrakos/tellsticknet
 
 default: check
 
+install:
+	uv pip install -e ".[dev]"
+
 format: white
 
 white: black
 
 black:
-	white setup.py tellsticknet
+	black tellsticknet
+	white tellsticknet
 
 lint:
-	tox -e lint
+	flake8 tellsticknet
+	pylint -E tellsticknet
+	yamllint tellsticknet-sample.conf
 
 test:
-	tox
+	pytest tellsticknet
 
 check: lint test
 
 clean:
 	rm -rf *.egg-info
-	rm -rf .tox
 	rm -rf .pytest_cache
 	rm -rf dist
+	rm -rf build
 	rm -rf .cache
 	rm -f *~
 	rm -f .*~
 
-pypi:
-	rm -f dist/*.tar.gz
-	python3 setup.py sdist
-	twine upload dist/*.tar.gz
+build:
+	uv build
+
+pypi: clean build
+	uv publish
 
 release:
-	git diff-index --quiet HEAD -- && make check && bumpversion patch && git push --tags && git push && make pypi
+	git diff-index --quiet HEAD -- && make check && git push && make pypi
 
 docker-build:
 	docker build -t $(IMAGE) .

@@ -1,9 +1,15 @@
 language: python
 python:
-  - "3.7"
-dist: xenial
-env:
-  - TOXENV=py37
-  - TOXENV=lint
-install: pip install tox
-script: tox
+  - "3.12"
+dist: jammy
+install:
+  - pip install uv
+  - uv pip install --system -e ".[dev]"
+script:
+  - pytest tellsticknet
+  - black --version
+  - white --check tellsticknet
+  - pylint -E tellsticknet
+  - flake8 --version
+  - flake8 tellsticknet
+  - yamllint tellsticknet-sample.conf
