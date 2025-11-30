@@ -27,7 +27,7 @@ COPY --chown=tellstick:tellstick src/tellsticknet ./src/tellsticknet
 
 # Sync and install dependencies
 RUN uv sync --frozen --no-dev \
-    && uv pip install --editable . coloredlogs libnacl
+    && uv pip install --no-cache coloredlogs libnacl
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["python3", "-m", "tellsticknet", "mqtt"]
