@@ -22,6 +22,8 @@ dependencies = [
     "docopt",
     "pyyaml",
     "amqtt>=0.11",
+    "coloredlogs",
+    "libnacl"
 ]
 
 [project.optional-dependencies]

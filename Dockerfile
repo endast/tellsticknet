@@ -23,8 +23,7 @@ USER tellstick
 
 COPY --chown=tellstick:tellstick README.md pyproject.toml uv.lock ./
 
-RUN uv sync --frozen --no-dev \
-    && uv pip install --no-cache coloredlogs libnacl
+RUN uv sync --frozen --no-dev
 
 COPY --chown=tellstick:tellstick tellsticknet ./tellsticknet
 
