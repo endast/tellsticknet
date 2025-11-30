@@ -13,3 +13,9 @@ dist
 venv
 .venv
 build
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml

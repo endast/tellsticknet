@@ -13,7 +13,10 @@ lint:
 	ruff check tellsticknet tests
 
 test:
-	uv run python -m pytest -v
+	uv run pytest -v
+
+coverage:
+	uv run pytest --cov=tellsticknet --cov-report=term-missing --cov-report=html -v
 
 check: lint test
 

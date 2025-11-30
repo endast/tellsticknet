@@ -28,6 +28,7 @@ dependencies = [
 test = [
     "pytest",
     "pytest-sugar",
+    "pytest-cov",
 ]
 lint = [
     "ruff",
@@ -66,3 +67,27 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # unused imports in __init__.py are often intentional
+
+[tool.coverage.run]
+source = ["tellsticknet"]
+omit = [
+    "tests/*",
+    "tellsticknet/__main__.py",  # CLI entry point, hard to test
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
