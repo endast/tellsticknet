@@ -14,17 +14,27 @@ There is no support for local access to Tellstick Net in the [telldus-core][1] o
 [2]: https://github.com/erijo/tellcore-py
 [3]: https://github.com/telldus/telldus/blob/master/telldus-core/service/Protocol.cpp#L216
 
-Examples:
+## Installation
+
+```bash
+# Install with uv (recommended)
+uv pip install tellsticknet
+
+# Or install in development mode
+uv sync --all-extras
+```
+
+## Examples
 
 Discovery
 ```bash
-> python -m tellsticknet.d  iscover
+> python -m tellsticknet discover
 [('192.168.1.106', ['TellStickNet', '<MAC>', '<CODE>', '17'])]
 ```
 
 Listen for received packets and print parsed values
 ```bash
-> python -m tellsticknet 2>/dev/null
+> python -m tellsticknet listen 2>/dev/null
 {'model': 'temperaturehumidity', 'data': {'humidity': 31, 'temp': 18.1}, 'lastUpdated': 1459502928, 'sensorId': 104, 'protocol': 'mandolyn', 'class': 'sensor'}
 {'model': 'temperaturehumidity', 'data': {'humidity': 34, 'temp': 16.7}, 'lastUpdated': 1459503006, 'sensorId': 135, 'protocol': 'fineoffset', 'class': 'sensor'}
 (...)
@@ -32,7 +42,7 @@ Listen for received packets and print parsed values
 
 Listen for raw packets and dump to file
 ```bash
-> python -m tellsticknet raw 2>/dev/null | tee packets.log
+> python -m tellsticknet listen --raw 2>/dev/null | tee packets.log
 2016-04-01T11:39:15 7:RawDatah5:class6:sensor8:protocolA:fineoffset4:datai41B03B4DAAss
 2016-04-01T11:39:17 7:RawDatah5:class6:sensor8:protocol8:mandolyn5:model13:temperaturehumidity4:datai13413986ss
 (...)
@@ -65,10 +75,10 @@ Export temperature readings as csv
 
 Archive all packets, one file per day
 ```bash
-> python -m tellsticknet dump | tee >(cronolog packets.%Y-%m-%d.log)
+> python -m tellsticknet listen --raw | tee >(cronolog packets.%Y-%m-%d.log)
 ```
 
 Start MQTT gateway, forwarding all sensor readings to a MQTT server (where Home Assistant can be a subscriber), also receive any commands from the server (e.g. from Home Assistant). Note that this requires a MQTT configuration file placed at ~/.config/mosquitto_pub
 ```bash
-> tellsticknet mqtt -vv
+> python -m tellsticknet mqtt -vv
 ```
