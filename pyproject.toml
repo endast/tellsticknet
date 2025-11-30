@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tellsticknet"
-version = "0.1.2"
+version = "0.1.3"
 description = "Listen for UDP sensor broadcasts from a Tellstick"
 readme = "README.md"
 requires-python = ">=3.12"
