@@ -21,11 +21,9 @@ RUN useradd -m -u 1000 -s /bin/bash tellstick \
 
 USER tellstick
 
-COPY --chown=tellstick:tellstick README.md pyproject.toml uv.lock ./
+COPY --chown=tellstick:tellstick . ./
 
 RUN uv sync --frozen --no-dev
-
-COPY --chown=tellstick:tellstick tellsticknet ./tellsticknet
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["python3", "-m", "tellsticknet", "mqtt"]
