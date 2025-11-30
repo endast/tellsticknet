@@ -21,11 +21,9 @@ RUN useradd -m -u 1000 -s /bin/bash tellstick \
 
 USER tellstick
 
-# Copy metadata and package
 COPY --chown=tellstick:tellstick pyproject.toml uv.lock README.md ./
-COPY --chown=tellstick:tellstick src/tellsticknet ./src/tellsticknet
+COPY --chown=tellstick:tellstick src ./src
 
-# Sync and install dependencies
 RUN uv sync --frozen --no-dev \
     && uv pip install --no-cache coloredlogs libnacl
 

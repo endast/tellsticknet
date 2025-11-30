@@ -3,10 +3,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tellsticknet"]
+packages = ["src"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/tellsticknet"]
+include = ["src"]
 
 [project]
 name = "tellsticknet"
@@ -20,7 +20,9 @@ authors = [
     { name = "Magnus Wahlberg" }
 ]
 keywords = ["tellstick"]
-classifiers = ["License :: OSI Approved :: MIT License"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
 
 dependencies = [
     "docopt",
@@ -29,13 +31,69 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest", "pytest-sugar", "pytest-cov"]
-lint = ["ruff"]
-dev = ["tellsticknet[test,lint]"]
+test = [
+    "pytest",
+    "pytest-sugar",
+    "pytest-cov",
+]
+lint = [
+    "ruff",
+]
+dev = [
+    "tellsticknet[test,lint]",
+]
 
 [project.scripts]
-tellsticknet = "tellsticknet.__main__:app_main"
+tellsticknet = "src.__main__:app_main"
 
 [project.urls]
 Homepage = "https://github.com/molobrakos/tellsticknet"
 Repository = "https://github.com/molobrakos/tellsticknet"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "tellsticknet"]
+addopts = "--doctest-modules"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501", # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # unused imports in __init__.py are often intentional
+
+[tool.coverage.run]
+source = ["tellsticknet"]
+omit = [
+    "tests/*",
+    "tellsticknet/__main__.py",  # CLI entry point, hard to test
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+show_missing = true
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
