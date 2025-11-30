@@ -4,6 +4,7 @@ default: check
 
 install:
 	uv sync --all-extras
+	uv pip install -e .
 
 format:
 	ruff format tellsticknet
