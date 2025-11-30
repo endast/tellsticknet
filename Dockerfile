@@ -30,4 +30,4 @@ RUN uv sync --frozen --no-dev \
     && uv pip install --editable . coloredlogs libnacl
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["tellsticknet", "mqtt"]
+CMD ["python3", "-m", "tellsticknet", "mqtt"]
