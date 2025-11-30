@@ -18,13 +18,13 @@ Examples:
 
 Discovery
 ```bash
-> ./script/discover # (or python3 -m tellsticknet.discover)
+> python -m tellsticknet.d  iscover
 [('192.168.1.106', ['TellStickNet', '<MAC>', '<CODE>', '17'])]
 ```
 
 Listen for received packets and print parsed values
 ```bash
-> ./script/listen 2>/dev/null # or python3 -m tellsticknet
+> python -m tellsticknet 2>/dev/null
 {'model': 'temperaturehumidity', 'data': {'humidity': 31, 'temp': 18.1}, 'lastUpdated': 1459502928, 'sensorId': 104, 'protocol': 'mandolyn', 'class': 'sensor'}
 {'model': 'temperaturehumidity', 'data': {'humidity': 34, 'temp': 16.7}, 'lastUpdated': 1459503006, 'sensorId': 135, 'protocol': 'fineoffset', 'class': 'sensor'}
 (...)
@@ -32,7 +32,7 @@ Listen for received packets and print parsed values
 
 Listen for raw packets and dump to file
 ```bash
-> ./script/listen raw 2>/dev/null | tee packets.log
+> python -m tellsticknet raw 2>/dev/null | tee packets.log
 2016-04-01T11:39:15 7:RawDatah5:class6:sensor8:protocolA:fineoffset4:datai41B03B4DAAss
 2016-04-01T11:39:17 7:RawDatah5:class6:sensor8:protocol8:mandolyn5:model13:temperaturehumidity4:datai13413986ss
 (...)
@@ -40,7 +40,7 @@ Listen for raw packets and dump to file
 
 Parse previously dumped packets
 ```bash
-> cat packets.log | ./script/parse
+> cat packets.log | python -m tellsticknet parse
 {"class": "sensor", "data": {"temp": 5.9, "humidity": 77}, "model": "temperaturehumidity", "sensorId": 27, "lastUpdated": 1459503555, "protocol": "fineoffset"}
 {"class": "sensor", "data": {"temp": 7.5, "humidity": 65}, "model": "temperaturehumidity", "sensorId": 11, "lastUpdated": 1459503557, "protocol": "mandolyn"}
 (...)
@@ -48,7 +48,7 @@ Parse previously dumped packets
 ```
 Display all sensors
 ```bash
-> cat packets.log | ./script/parse | jq ".sensorId" | sort -n | uniq
+> cat packets.log | python -m tellsticknet parse | jq ".sensorId" | sort -n | uniq
 11
 27
 135
@@ -57,7 +57,7 @@ Display all sensors
 
 Export temperature readings as csv
 ```bash
-> cat packets.log | ./script/parse | jq '[.sensorId, .lastUpdated, .data["temp"]] | @csv'
+> cat packets.log | python -m tellsticknet parse | jq '[.sensorId, .lastUpdated, .data["temp"]] | @csv'
 "136,1459504835,3.6"
 "104,1459504848,18.6"
 (...)
@@ -65,10 +65,10 @@ Export temperature readings as csv
 
 Archive all packets, one file per day
 ```bash
-> ./script/dump | tee >(cronolog packets.%Y-%m-%d.log)
+> python -m tellsticknet dump | tee >(cronolog packets.%Y-%m-%d.log)
 ```
 
 Start MQTT gateway, forwarding all sensor readings to a MQTT server (where Home Assistant can be a subscriber), also receive any commands from the server (e.g. from Home Assistant). Note that this requires a MQTT configuration file placed at ~/.config/mosquitto_pub
 ```bash
-> ./script/tellsticknet mqtt -vv
+> tellsticknet mqtt -vv
 ```

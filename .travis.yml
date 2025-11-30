@@ -4,7 +4,7 @@ python:
 dist: jammy
 install:
   - pip install uv
-  - uv pip install --system -e ".[dev]"
+  - uv sync --all-extras
 script:
   - pytest tellsticknet
   - black --version

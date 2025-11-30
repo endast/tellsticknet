@@ -63,8 +63,8 @@ def parse_stdin():
     """Parse protocol data passed on stdin, previously captured
 
     example to print all captured sensor id:s
-    script/listen > /tmp/packets.log
-    cat /tmp/packets.log  | ./script/parse | jq ".sensorId" | sort | uniq
+    python -m tellsticknet > /tmp/packets.log
+    cat /tmp/packets.log | python -m tellsticknet parse | jq ".sensorId" | sort | uniq
     """
     for line in stdin.readlines():
         line = line.strip()

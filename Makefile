@@ -3,7 +3,7 @@ IMAGE=molobrakos/tellsticknet
 default: check
 
 install:
-	uv pip install -e ".[dev]"
+	uv sync --all-extras
 
 format: white
 

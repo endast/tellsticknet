@@ -16,10 +16,11 @@ RUN set -x \
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock ./
 COPY tellsticknet ./tellsticknet
 
-RUN uv pip install --system --no-cache coloredlogs libnacl . \
+RUN uv sync --frozen --no-dev && \
+    uv pip install --system --no-cache coloredlogs libnacl \
   ;
 
 USER tellstick

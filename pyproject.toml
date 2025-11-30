@@ -19,9 +19,8 @@ classifiers = [
 
 dependencies = [
     "docopt",
-    "requests",
     "pyyaml",
-    "amqtt<0.11",
+    "amqtt",
 ]
 
 [project.optional-dependencies]
